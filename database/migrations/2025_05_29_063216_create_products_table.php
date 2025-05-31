@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->string('image')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('size')->nullable(); // S, M, L, XL, etc.
             $table->string('color')->nullable();
             $table->string('brand')->nullable();

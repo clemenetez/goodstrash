@@ -63,6 +63,18 @@
                 </div>
             </div>
 
+            @if(auth()->check() && auth()->user()->isAdmin())
+            <div class="rounded-md shadow-sm">
+                <label for="role" class="block text-sm font-medium text-gray-700 mb-2">User Role</label>
+                <select id="role" 
+                        name="role" 
+                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <option value="customer">Customer</option>
+                    <option value="admin">Administrator</option>
+                </select>
+            </div>
+            @endif
+
             <div class="flex items-center justify-end">
                 <div class="text-sm">
                     <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-500">

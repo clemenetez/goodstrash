@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use App\Models\Category;
+use App\Models\User;
 
 class Product extends Model
 {
@@ -18,6 +19,7 @@ class Product extends Model
         'price',
         'image',
         'category_id',
+        'user_id',
         'size',
         'color',
         'brand',
@@ -47,6 +49,16 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function isOwnedBy(User $user): bool
+    {
+        return $this->user_id === $user->id;
     }
 
     public function getFormattedPriceAttribute()

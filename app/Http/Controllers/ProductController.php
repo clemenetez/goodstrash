@@ -37,20 +37,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name'        => 'required|max:255',
-            'description' => 'required',
-            'price'       => 'required|numeric',
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'image'       => 'nullable|image|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'size' => 'nullable|string|max:10',
+            'color' => 'nullable|string|max:50',
+            'brand' => 'nullable|string|max:50',
+            'stock' => 'nullable|integer|min:0',
         ]);
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $validatedData['image'] = $request->file('image')->store('products', 'public');
         }
 
-        Product::create($data);
-        return redirect()->route('products.index');
+        // Додаємо ID поточного користувача
+        $validatedData['user_id'] = auth()->id();
+
+        $product = Product::create($validatedData);
+
+        return redirect()->route('products.index')
+            ->with('success', 'Product created successfully.');
     }
 
     /**
