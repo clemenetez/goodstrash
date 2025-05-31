@@ -4,38 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goods Catalog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .nav a { margin-right: 15px; text-decoration: none; color: #333; }
-        .nav a:hover { text-decoration: underline; }
-        .product-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .product-card { border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
-        .product-image { max-width: 100%; height: auto; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; }
-        input, textarea, select { width: 100%; padding: 8px; border: 1px solid #ddd; }
-        .btn { padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .btn:hover { background: #0069d9; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
-<body>
-    <div class="header">
-        <h1>Goods Catalog</h1>
-        <div class="nav">
-            @auth
-                <a href="{{ route('products.index') }}">Products</a>
-                <a href="{{ route('categories.index') }}">Categories</a>
-                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button type="submit" class="btn">Logout</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}">Login</a>
-            @endauth
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{{ route('home') }}" class="text-xl font-bold text-gray-800">
+                        Goods Catalog
+                    </a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    @auth
+                        <a href="{{ route('products.index') }}" 
+                           class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                            Products
+                        </a>
+                        <a href="{{ route('categories.index') }}" 
+                           class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                            Categories
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" 
+                                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" 
+                           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                            Login
+                        </a>
+                    @endauth
+                </div>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    @yield('content')
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        @if(session('success'))
+            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ session('error') }}</span>
+            </div>
+        @endif
+
+        @yield('content')
+    </main>
 </body>
 </html>

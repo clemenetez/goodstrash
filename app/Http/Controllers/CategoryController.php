@@ -34,8 +34,9 @@ class CategoryController extends Controller
             'name'        => 'required|max:255',
             'description' => 'nullable',
         ]);
+        
         Category::create($data);
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
     /**
@@ -43,6 +44,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
+        $category = Category::with('products')->findOrFail($id);
         return view('categories.show', compact('category'));
     }
 
@@ -51,6 +53,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
+        $category = Category::findOrFail($id);
         return view('categories.edit', compact('category'));
     }
 
@@ -67,7 +70,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->update($data);
     
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
     /**
@@ -77,6 +80,6 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete();
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
 }
