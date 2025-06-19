@@ -7,10 +7,13 @@
             <div class="flex justify-between items-start mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">{{ $product->name }}</h2>
                 <div class="flex space-x-2">
+                    @can('update', $product)
                     <a href="{{ route('products.edit', $product->id) }}" 
                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
                         Edit Product
                     </a>
+                    @endcan
+                    @can('delete', $product)
                     <form action="{{ route('products.destroy', $product->id) }}" 
                           method="POST"
                           class="inline"
@@ -22,6 +25,7 @@
                             Delete Product
                         </button>
                     </form>
+                    @endcan
                 </div>
             </div>
 
